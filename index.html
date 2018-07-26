@@ -69,8 +69,7 @@
             });
 
             socket.on('new message', function(data){
-                $chat.append('<div class="well user_' + data.user + '"><strong>' + data.user + '</strong>: ' + data.msg + '</div>');
-                var x = document.getElementsByClassName("user_" + data.user);
+                $chat.append('<div class="well"><strong>' + data.user + '</strong>: ' + data.msg + '</div>');
                 for (i = 0; i < x.length; i++) {
                     x[i].style.backgroundColor = "red";
                 }
