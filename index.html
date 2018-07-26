@@ -11,6 +11,10 @@
         #messageArea{
             display: none;
         }
+        #chat{
+            overflow-y: auto;
+            height: calc(100% - 150px);
+        }
     </style>
 </head>
 <body>
@@ -31,16 +35,17 @@
         <div class="row" id="messageArea">
             <div class="col-md-4">
                 <div class="well">
+                    <h1>Chat Room</h1>
+                    <p>This is a simple chat room I made to get introduced to node.js. The app uses socket.io and is hosted by heroku.com</p>
                     <h3>Online Users</h3>
                     <ul class ="list-group" id="users"></ul>
                 </div>
             </div>
             <div class="col-md-8">
-                <div class = "chat" id="chat"></div>
-
+                <div class = "chat well" id="chat"></div>
                 <form id="messageForm">
                     <div class="form-group">
-                        <label>Enter Message</label>
+                        <label id="messageLabel">Send message</label>
                         <input class="form-control" id="message"/>
                         <br/>
                         <input type="submit" class="btn btn-primary" value="Send Message"/>
@@ -56,6 +61,7 @@
             var $messageForm = $('#messageForm');
             var $message = $('#message');
             var $chat = $('#chat');
+            var $messageLabel = $('#messageLabel');
             var $messageArea = $('#messageArea');
             var $userFormArea = $('#userFormArea');
             var $userForm = $('#userForm');
@@ -64,15 +70,16 @@
 
             $messageForm.submit(function(e){
                 e.preventDefault();
-                socket.emit('send message', $message.val());
-                $message.val('');
+                if ($message.val() != ""){
+                    socket.emit('send message', $message.val());
+                    $message.val('');
+                }
             });
 
             socket.on('new message', function(data){
                 $chat.append('<div class="well"><strong>' + data.user + '</strong>: ' + data.msg + '</div>');
-                for (i = 0; i < x.length; i++) {
-                    x[i].style.backgroundColor = "red";
-                }
+                var chatWindow = document.getElementById("chat");
+                chatWindow.scrollTop =  chatWindow.scrollHeight;
             });
 
             $userForm.submit(function(e){
